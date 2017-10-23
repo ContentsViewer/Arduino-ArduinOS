@@ -418,7 +418,7 @@ void OtherFunction(void)
         }
     }
     */
-    void TaskDelayUntil(PortTickType * const previouswakeTime, PortTickType timeIncrement);
+    void TaskDelayUntil(PortTickType * const previousWakeTime, PortTickType timeIncrement);
 
     /*
     //

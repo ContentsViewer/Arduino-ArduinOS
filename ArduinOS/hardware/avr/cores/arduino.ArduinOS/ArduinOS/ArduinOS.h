@@ -13,7 +13,7 @@
 //   名前               関数                            設定項目                        イベント箇所
 //   IdleHook           ApplicationIdleHook()           CONFIG_USE_IDLE_HOOK            IdleTask実行時
 //   TickHook           ApplicationTickHook()           CONFIG_USE_TICK_HOOK            システム時間インクリメント時
-//   MallocFailedHook   ApplicationMallocFailedHook()   CONFIG_USE_MALLOC_FAILED_HOOK   メモリ確保失敗時
+//   MallocFailedHook   ApplicationMallocFailedHook()   CONFIG_USE_MALLOC_FAILED_HOOK   PortMalloc()関数によるメモリ確保失敗時. malloc()関数ではない.
 //   StackOverflowHook  ApplicationStackOverflowHook()  CONFIG_CHECK_FOR_STACK_OVERFLOW スタックオバーフロー検知時
 /
 // 設定:
@@ -61,6 +61,9 @@
 //  Arduino.h
 //  main.cpp
 //  wiring.c
+//  WString.h
+//  new.cpp
+//  
 //
 // ハードウェア依存ファイル一覧:
 //  Port.c
@@ -746,7 +749,7 @@ TaskLoop(taskA)
         TaskDelete(name);                                                                   \
     }
 
-//
+/*
 // クリティカルセクションに入ることを宣言します.
 // あるタスクがクリティカルセクションに入っている間は,
 // ほかのタスクは実行されなくなります.
@@ -757,9 +760,30 @@ TaskLoop(taskA)
 //  クリティカルセクション中では, Kernelの割り込みも停止されており,
 //  システム時間も更新されません. また, ほかタスクの処理も行われなくなります.
 // 
+// Example usage:
+
+// タスク宣言
+DeclareTaskLoop(taskA);
+
+// TaskCode宣言
+TaskLoop(taskA)
+{
+    // ...
+
+    // クリティカルセクションに入る
+    EnterCritical();
+    {
+        // ここのブロック内では, OSによる割り込みは行われない.
+        // ...
+
+        // クリティカルセクションから出る.
+        ExitCritical();
+    }
+}
+*/
 #define EnterCritical() PortEnterCritical()
 
-//
+/*
 // クリティカルセクションに出ることを宣言します.
 // あるタスクがクリティカルセクションに入っている間は,
 // ほかのタスクは実行されなくなります.
@@ -770,6 +794,27 @@ TaskLoop(taskA)
 //  クリティカルセクション中では, Kernelの割り込みも停止されており,
 //  システム時間も更新されません. また, ほかタスクの処理も行われなくなります.
 // 
+// Example usage:
+
+// タスク宣言
+DeclareTaskLoop(taskA);
+
+// TaskCode宣言
+TaskLoop(taskA)
+{
+    // ...
+
+    // クリティカルセクションに入る
+    EnterCritical();
+    {
+        // ここのブロック内では, OSによる割り込みは行われない.
+        // ...
+
+        // クリティカルセクションから出る.
+        ExitCritical();
+    }
+}
+*/
 #define ExitCritical() PortExitCritical()
 
 //
@@ -778,21 +823,195 @@ TaskLoop(taskA)
 // @param ms:
 //  待機時間(ms)
 //  
-#define DelayWithBlocked(ms) TaskDelay((ms) / PORT_TICK_RATE_MS)           
+#define DelayWithBlocked(ms) TaskDelay((ms) / PORT_TICK_RATE_MS)
+
+#define GetTickCount() TaskGetTickCount()
+
+/*
+//
+// @param previousWakeTime:
+//  タスクが待機状態から解放されたときの時間変数のポインタ.
+//  使用前に必ず現在時刻(tick)で初期化する必要があります. GetTickCount()を使用してください.
+//  のちのこの値は, 自動でDelayUntilWithBlocked()で更新されます.
+//
+// @param frequency:
+//  サイクル周期(ms).
+//  タスクが次に待機状態を抜ける時間は, previousWakeTime(tick) + frequency(ms) / PORT_TICK_RATE_MS(ms / tick) です.
+//
+// Example usage :
+
+TaskLoop(taskA)
+{
+    unsigned long lastWakeTime;
+
+    // 1000msごとの周期
+    const unsigned long frequency = 1000;
+
+    // lastWakeTime変数を現在時刻で初期化
+    lastwakeTime = GetTickCount();
+    for (;;)
+    {
+        // 次のサイクルまで待機
+        DelayUntilWithBlocked(&lastWakeTime, frequency);
+
+        // 何かルーチン処理
+        // ...
+    }
+}
+*/
+#define DelayUntilWithBlocked(previousWakeTime, frequency)              \
+    TaskDelayUntil((previousWakeTime), (frequency) / PORT_TICK_RATE_MS)
 // ------------------------------------------------------
 
 // --- Semaphore, Mutex 関係 -------------------------------------------
 //
 //
+
+
+/*
+// バイナリセマフォを作成します.
+// このタイプのセマフォは, 純粋なタスク間の同期に用いられます.
+// 動機が必要な例として, 複数のタスクが一つのリソースにアクセスするときなどが挙げられるでしょう.
+// あるタスクが, セマフォを獲得している際, 他のタスクはこのセマフォを獲得できません.
+// 獲得しているタスクがセマフォを開放したとき, 他のタスクはこのセマフォを獲得できます.
+//
+// @param semahore:
+//  作成されたセマフォへのハンドル
+//
+// Example usage :
+
+SemaphoreHandle semaphore;
+
+TaskLoop(taskA)
+{
+    // セマフォはCreateBinarySemaphore()を呼ぶまで使用できません.
+    CreateBinarySemaphore(semaphore);
+
+    if (semaphore != NULL)
+    {
+        // セマフォの作成に成功したとき.
+        // ...
+    }
+}
+*/
 #define CreateBinarySemaphore(semaphore)                  \
     SemaphoreCreateBinary(semaphore)
 
+/*
+// ミューテックスを作成します.
+// このタイプのセマフォは, バイナリセマフォとほとんど同じですが,
+// 優先度継承を行う点が異なります.
+// 優先度継承とは, セマフォ獲得による優先度の逆転の問題を解決します.
+//
+// @param semahore:
+//  作成されたセマフォへのハンドル
+//
+// Example usage :
+
+SemaphoreHandle semaphore;
+
+TaskLoop(taskA)
+{
+    // セマフォはCreateMutex()を呼ぶまで使用できません.
+    CreateMutex(semaphore);
+
+    if (semaphore != NULL)
+    {
+        // セマフォの作成に成功したとき.
+        // ...
+    }
+}
+*/
 #define CreateMutex(semaphore)                            \
     (semaphore) = SemaphoreCreateMutex()
 
+/*
+// セマフォを獲得します.
+// そのセマフォは必ずCreate関数であらかじめ作成する必要があります.
+// 
+// @param semaphore:
+//  作成したセマフォ
+//
+// @param blockTime:
+//  獲得するまでの最大待機時間(ms)
+//  この時間を超えても, セマフォを獲得できない場合,
+//  獲得処理を停止します.
+//
+// Example usage:
+
+
+SemaphoreHandle semaphore;
+
+TaskLoop(taskA)
+{
+    // セマフォはCreateBinarySemaphore()を呼ぶまで使用できません.
+    CreateBinarySemaphore(semaphore);
+
+    if (semaphore != NULL)
+    {
+        // セマフォの作成に成功したとき.
+        // ...
+
+        // セマフォを獲得するのに, 100ms待機する
+        if(Acuire(semaphore, 100)){
+            // 獲得できた時
+            
+            // ...
+
+            // 共有しているリソースへの処理を終えたとき,
+            // セマフォの開放
+            Relese(semaphore);
+        else{
+            // 獲得できなかったとき
+            // 共有しているリソースへのアクセス権が得られなかった.
+        }
+    }
+}
+
+*/
 #define Acquire(semaphore, blockTime)                     \
     (SemahoreTake((semaphore), ((PortTickType)(blockTime)) / PORT_TICK_RATE_MS) == PD_TRUE)
 
+
+/*
+// セマフォを解放します.
+// そのセマフォは必ずCreate関数であらかじめ作成する必要があります.
+// 
+// @param semaphore:
+//  作成したセマフォ
+//
+// Example usage:
+
+
+SemaphoreHandle semaphore;
+
+TaskLoop(taskA)
+{
+    // セマフォはCreateBinarySemaphore()を呼ぶまで使用できません.
+    CreateBinarySemaphore(semaphore);
+
+    if (semaphore != NULL)
+    {
+        // セマフォの作成に成功したとき.
+        // ...
+
+        // セマフォを獲得するのに, 100ms待機する
+        if(Acuire(semaphore, 100)){
+            // 獲得できた時
+            
+            // ...
+
+            // 共有しているリソースへの処理を終えたとき,
+            // セマフォの開放
+            Relese(semaphore);
+        else{
+            // 獲得できなかったとき
+            // 共有しているリソースへのアクセス権が得られなかった.
+        }
+    }
+}
+
+*/
 #define Release(semaphore)                                \
     (SemaphoreGive((semaphore)) == PD_TRUE)
 

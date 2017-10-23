@@ -144,7 +144,7 @@ extern "C" {
 //
 #define PORT_STACK_GROWTH (-1)
 
-// タイマー割り込み周期. 1tickあたりの時間(ms)
+// タイマー割り込み周期(ms / tick). 1tickあたりの時間(ms)
 // Memo:
 //  この時点でCONFIG_TICK_RATE_HZが定義されていなくても,
 //  アプリケーション側でPORT_TICK_RATE_MSを使用しない限り, エラーは出ない.

@@ -1,5 +1,10 @@
 /*
-
+// ArduinOSと競合しないMalloc関数
+// 標準のmalloc関数は, 現在のスタックポインタ以下のメモリをヒープ領域として扱うが,
+// ArduinOSによってスタックポインタが大域変数領域へ移動するゆえ, 失敗する.
+//
+// この, Malloc関数は現在のスタックポインタ以下をヒープ領域として扱わず, メモリの最後
+// までをヒープ領域として扱うことで, エラーを防ぐ.
 */
 
 /* Copyright (c) 2002, 2004, 2010 Joerg Wunsch
@@ -39,7 +44,7 @@
  
 
 #include <stdlib.h>
-#include "MallocOverride.h"
+#include "Malloc.h"
 
 #include <inttypes.h>
 #include <string.h>
@@ -66,9 +71,11 @@ struct __freelist {
  */
 
  
-
+// マクロ定義されているSTACK_POINTER()を本来のスタックポインタ値から,
+// RAMの最終アドレスに変更する.
 //#define STACK_POINTER() ((char *)AVR_STACK_POINTER_REG)
 #define STACK_POINTER() ((char *)RAMEND)
+
 extern char __heap_start;
 char *__brkval = &__heap_start;	// first location not yet allocated
 struct __freelist *__flp;	// freelist pointer (head of freelist)
