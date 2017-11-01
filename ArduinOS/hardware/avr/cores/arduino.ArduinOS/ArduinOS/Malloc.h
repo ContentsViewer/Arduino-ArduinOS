@@ -1,6 +1,6 @@
 
-#ifndef MALLOC_H
-#define	MALLOC_H
+#ifndef ARDUINOS_MALLOC_H
+#define	ARDUINOS_MALLOC_H
 
 #ifdef __cplusplus
 extern "C" {

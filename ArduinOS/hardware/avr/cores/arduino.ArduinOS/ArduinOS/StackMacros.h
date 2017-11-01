@@ -86,8 +86,8 @@ engineered and independently SIL3 certified version for use in safety and
 mission critical applications that require provable dependability.
 */
 
-#ifndef STACK_MACROS_H
-#define STACK_MACROS_H
+#ifndef ARDUINOS_STACK_MACROS_H
+#define ARDUINOS_STACK_MACROS_H
 
 /*
 // タスクが個々に占有するメモリ空間を超えた, もしくは

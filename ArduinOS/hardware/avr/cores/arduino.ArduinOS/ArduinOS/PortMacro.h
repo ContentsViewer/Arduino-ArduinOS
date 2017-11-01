@@ -90,8 +90,8 @@ mission critical applications that require provable dependability.
 // ---------------------------------------------------------
 
 
-#ifndef PORTMACRO_H
-#define PORTMACRO_H
+#ifndef ARDUINOS_PORTMACRO_H
+#define ARDUINOS_PORTMACRO_H
 
 // C言語でコンパイルするように宣言
 // 関数が正しくリンクされるようにするため.

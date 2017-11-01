@@ -85,8 +85,8 @@ mission critical applications that require provable dependability.
 */
 
 
-#ifndef PORTABLE_H
-#define PORTABLE_H
+#ifndef ARDUINOS_PORTABLE_H
+#define ARDUINOS_PORTABLE_H
 
 #include "PortMacro.h"
 

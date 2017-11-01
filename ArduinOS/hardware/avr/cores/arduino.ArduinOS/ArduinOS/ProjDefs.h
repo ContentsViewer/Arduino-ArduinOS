@@ -85,8 +85,8 @@ engineered and independently SIL3 certified version for use in safety and
 mission critical applications that require provable dependability.
 */
 
-#ifndef PROJDEFS_H
-#define PROJDEFS_H
+#ifndef ARDUINOS_PROJDEFS_H
+#define ARDUINOS_PROJDEFS_H
 
 //タスク関数が従うプロトタイプ
 //Defines the prototype to which task functions must conform

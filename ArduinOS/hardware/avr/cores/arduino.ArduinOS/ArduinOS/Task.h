@@ -92,8 +92,8 @@ mission critical applications that require provable dependability.
 */
 
 
-#ifndef TASK_H
-#define TASK_H
+#ifndef ARDUINOS_TASK_H
+#define ARDUINOS_TASK_H
 
 
 #ifndef ARDUINOS_H

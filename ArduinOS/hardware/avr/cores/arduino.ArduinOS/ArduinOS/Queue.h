@@ -86,8 +86,8 @@ mission critical applications that require provable dependability.
 */
 
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef ARDUINOS_QUEUE_H
+#define ARDUINOS_QUEUE_H
 
 #ifndef ARDUINOS_H
     #error "include ArduinOS.h" must appear in source files before "include Queue.h"

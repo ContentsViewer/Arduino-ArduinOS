@@ -85,8 +85,8 @@ engineered and independently SIL3 certified version for use in safety and
 mission critical applications that require provable dependability.
 */
 
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#ifndef ARDUINOS_SEMAPHORE_H
+#define ARDUINOS_SEMAPHORE_H
 
 #ifndef ARDUINOS_H
 #error "include ArduinOS.h" must appear in source files before "include Semaphore.h"

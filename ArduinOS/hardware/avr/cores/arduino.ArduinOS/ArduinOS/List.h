@@ -85,8 +85,8 @@ engineered and independently SIL3 certified version for use in safety and
 mission critical applications that require provable dependability.
 */
 
-#ifndef LIST_H
-#define LIST_H
+#ifndef ARDUINOS_LIST_H
+#define ARDUINOS_LIST_H
 
 #ifdef __cplusplus
 extern "C" {

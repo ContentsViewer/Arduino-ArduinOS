@@ -1,6 +1,6 @@
 
-#ifndef MALLOC_OVERRIDE_H
-#define	MALLOC_OVERRIDE_H
+#ifndef ARDUINOS_MALLOC_OVERRIDE_H
+#define	ARDUINOS_MALLOC_OVERRIDE_H
 
 #include "Malloc.h"
 
