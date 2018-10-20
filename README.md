@@ -4,4 +4,4 @@ ArduinOSとは, リアルタイムOS(RTOS)を理解するために, もともと
 GNU General Public License(ver2) が適用されています.
 
 ArduinOSに関する詳しい説明は以下のページを参照してください.
-http://webviewer.php.xdomain.jp/?contentPath=./Contents/Arduino/ArduinOS/ArduinOS.html
+http://webviewer.php.xdomain.jp/ConMAS/?content=.%2FMaster%2FContents%2FArduino%2FArduinOS%2FArduinOS
