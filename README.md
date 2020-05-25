@@ -12,6 +12,10 @@ GNU General Public License(ver2) が適用されています.
 ArduinOSに関する詳しい説明は以下のページを参照してください.
 https://contentsviewer.work/Master/Arduino/ArduinOS/ArduinOS
 
+## 対応状況
+* Arduino UNO
+* Arduino Mega
+
 ## 動作確認済み環境
 * Arduino IDE 1.8.10
 * Arduino AVR Boards 1.8.1
