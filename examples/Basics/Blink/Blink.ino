@@ -7,9 +7,6 @@ void setup() {
   pinMode(13, OUTPUT);
 
   CreateTaskLoop(SerialTask, HIGH_PRIORITY);
-  
-  
-
 }
 
 void loop() {
@@ -26,4 +23,3 @@ TaskLoop(SerialTask){
   DelayWithBlocked(1000);
   
 }
-

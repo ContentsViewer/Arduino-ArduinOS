@@ -1,20 +1,20 @@
 
 ArduinOS
 
-ArduinOS�Ƃ�, ���A���^�C��OS(RTOS)�𗝉����邽�߂�, ���Ƃ��Ƃ���FreeRTOS����
-�K�v�ȋ@�\�𔲂��o��, Arduino�̊J�����Ŏg�p�ł���悤�ɂ������̂ł�.
+ArduinOSとは, リアルタイムOS(RTOS)を理解するために, もともとあるFreeRTOSから
+必要な機能を抜き出し, Arduinoの開発環境で使用できるようにしたものです.
 
-GNU General Public License(ver2) ���K�p����Ă��܂�.
-1) ���쌠�\���̕ێ�, ���ۏ�
-2) ���R�ɕ����E���ρE�Еz���邱�Ƃ̋���
-3) GPL���C�Z���X�̌p��
+GNU General Public License(ver2) が適用されています.
+1) 著作権表示の保持, 無保証
+2) 自由に複製・改変・頒布することの許可
+3) GPLライセンスの継承
 
-ArduinOS�Ɋւ���ڂ��������͈ȉ��̃y�[�W���Q�Ƃ��Ă�������.
+ArduinOSに関する詳しい説明は以下のページを参照してください.
 http://webviewer.php.xdomain.jp/?contentPath=./Contents/Arduino/ArduinOS/ArduinOS.html
 
 
 
-GPL���C�Z���X�͈ȉ��̂Ƃ���ł�.
+GPLライセンスは以下のとおりです.
 
 A special exception to the GPL is included to allow you to distribute a 
 combined work that includes FreeRTOS without being obliged to provide

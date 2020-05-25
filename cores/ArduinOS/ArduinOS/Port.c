@@ -146,7 +146,7 @@ extern volatile TaskControlBlock * volatile currentTCB;
 // SP_L: スタックポインタ下位バイト(0x3d)
 // SREG: ステータスレジスタ
 // ************************************************************
-inline void PortSaveContext(void);
+inline void PortSaveContext(void) __attribute__((__always_inline__));
 inline void PortSaveContext(void)
 {
     asm volatile(
@@ -223,7 +223,7 @@ inline void PortSaveContext(void)
 //
 // Opposite to PortSaveContext().
 // Interrupts will have been disabled during the context save so we can write to the stack pointer.
-inline void PortRestoreContext(void);
+inline void PortRestoreContext(void) __attribute__((__always_inline__));
 inline void PortRestoreContext(void)
 {
     asm volatile(
