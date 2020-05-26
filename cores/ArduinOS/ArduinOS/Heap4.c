@@ -97,8 +97,8 @@ mission critical applications that require provable dependability.
 #include "Task.h"
 
 
-//ヒープ領域の初期化. 初めにヒープ領域を使用する前に呼ぶ必要がある.
-//Initialises the heap structures before their firt use.
+// ヒープ領域の初期化. 初めにヒープ領域を使用する前に呼ぶ必要がある.
+// Initialises the heap structures before their firt use.
 static void HeapInit(void);
 
 // Allocate the memory for the heap.
@@ -137,8 +137,7 @@ struct BlockLink
 typedef struct BlockLink BlockLink;
 
 // アライメントされた構造体のサイズ
-static const size_t heapStructSize = (sizeof(BlockLink) + ((size_t)(PORT_BYTE_ALIGNMENT - 1)))
-& ~((size_t)PORT_BYTE_ALIGNMENT);
+static const size_t heapStructSize = (sizeof(BlockLink) + ((size_t)(PORT_BYTE_ALIGNMENT - 1))) & ~((size_t)PORT_BYTE_ALIGNMENT_MASK);
 
 #define HEAP_MINIMUM_BLOCK_SIZE ((size_t) (heapStructSize << 1))
 
