@@ -22,5 +22,5 @@ void loop() {
 
 TaskLoop(SerialTask){
   Serial.println(millis());
-  DelayWithBlocked(1000);
+  TaskDelayMillis(1000);
 }

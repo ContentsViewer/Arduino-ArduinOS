@@ -687,46 +687,10 @@ TaskLoop(taskA)
 }
 
 //
-// このコード(Suspend)が書かれているTaskを一時停止します.
-// 一時停止されたタスクは, ResumeTask()を実行するまで再開されません.
+// このコード(TaskSuspendSelf)が書かれているTaskを一時停止します.
+// 一時停止されたタスクは, TaskResume()を実行するまで再開されません.
 // 
-#define Suspend() TaskSuspend(NULL)
-
-//
-// 指定されたTaskを一時停止状態にします.
-// 一時停止されたタスクは, ResumeTask()を実行するまで再開されません.
-// 
-// @param name:
-//  一時停止をしたいTask名
-//
-#define SuspendTask(name)                                                                   \
-    if((name) != NULL)                                                                      \
-    {                                                                                       \
-        TaskSuspend(name);                                                                  \
-    }
-
-//
-// すべてのタスクを一時停止状態にします.
-// ResumeAll()を実行するまで, これらタスクは再開せれません.
-//
-#define SuspendAll() TaskSuspendAll()
-
-//
-// 一時停止されたタスクを再開します.
-//
-// @param name:
-//  再開したいタスク名
-//
-#define ResumeTask(name)                                                                    \
-    if((name) != NULL)                                                                      \
-    {                                                                                       \
-        TaskResume(name);                                                                   \
-    }
-
-//
-// SuspendAll()によって, 一時停止されたすべてのタスクを再開します.
-//
-#define ResumeAll() TaskResumeAll()
+#define TaskSuspendSelf() TaskSuspend(NULL)
 
 //
 // このコードが呼ばれた時点で, ほかのタスクに処理を移します.
@@ -737,19 +701,7 @@ TaskLoop(taskA)
 //
 // このコードが書かれているタスクを削除します.
 //
-#define Delete() TaskDelete(NULL)
-
-//
-// 指定されたタスクを削除します.
-//
-// @param name:
-//  削除したいタスク名
-//
-#define DeleteTask(name)                                                                    \
-    if((name) != NULL)                                                                      \
-    {                                                                                       \
-        TaskDelete(name);                                                                   \
-    }
+#define TaskDeleteSelf() TaskDelete(NULL)
 
 /*
 // クリティカルセクションに入ることを宣言します.
@@ -825,9 +777,7 @@ TaskLoop(taskA)
 // @param ms:
 //  待機時間(ms)
 //  
-#define DelayWithBlocked(ms) TaskDelay((ms) / PORT_TICK_RATE_MS)
-
-#define GetTickCount() TaskGetTickCount()
+#define TaskDelayMillis(ms) TaskDelay((ms) / PORT_TICK_RATE_MS)
 
 /*
 //
@@ -861,7 +811,7 @@ TaskLoop(taskA)
     }
 }
 */
-#define DelayUntilWithBlocked(previousWakeTime, frequency)              \
+#define TaskDelayUntilMillis(previousWakeTime, frequency)              \
     TaskDelayUntil((previousWakeTime), (frequency) / PORT_TICK_RATE_MS)
 // ------------------------------------------------------
 
