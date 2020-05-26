@@ -21,13 +21,11 @@ void MainTask(void *parameters)
 
 void SetupTask(void *parameters)
 {
-    // SetupTask‚ªˆ—‚ğI‚¦‚é‚Ü‚Å‘¼ƒ^ƒXƒN‚ğÀs‚³‚¹‚È‚¢.
+    // SetupTaskãŒå‡¦ç†ã‚’çµ‚ãˆã‚‹ã¾ã§ä»–ã‚¿ã‚¹ã‚¯ã‚’å®Ÿè¡Œã•ã›ãªã„.
     TaskSuspendAll();
     {
         setup();
-
         TaskCreate(MainTask, (signed PortChar *)"Main", mainLoopStackSize, NULL, mainLoopPriority, &loopTaskHandle);
-
     }
     TaskResumeAll();
 

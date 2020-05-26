@@ -1,3 +1,6 @@
+/*
+ * Blink with sending millis by serial
+ */
 
 DeclareTaskLoop(SerialTask);
 
@@ -18,8 +21,6 @@ void loop() {
 }
 
 TaskLoop(SerialTask){
-
   Serial.println(millis());
   DelayWithBlocked(1000);
-  
 }
